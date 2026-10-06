@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instalación y despliegue · MVP Ventas de Ropa</title>
+<style>
+:root{
+  --tinta:#1a1a1a; --suave:#5a6270; --linea:#e3e6ea; --fondo:#f6f7f9;
+  --marca:#1a237e; --marca-claro:#e8eaf6;
+  --ok:#0f7b3f; --ok-fondo:#e8f5ec;
+  --alerta:#8a5a00; --alerta-fondo:#fff4e0;
+  --error:#b3261e; --error-fondo:#fdecea;
+  --codigo:#1e222a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--fondo); color:var(--tinta);
+  font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+
+header{background:var(--marca);color:#fff;padding:38px 0 30px}
+header h1{margin:0 0 6px;font-size:1.85rem;letter-spacing:-.01em}
+header .sub{opacity:.85;font-size:.95rem}
+header .tags{margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap}
+header .tag{
+  background:rgba(255,255,255,.16);padding:3px 11px;border-radius:20px;
+  font-size:.75rem;letter-spacing:.02em;
+}
+
+nav.indice{
+  background:#fff;border:1px solid var(--linea);border-radius:12px;
+  padding:18px 22px;margin:26px 0;
+}
+nav.indice h2{margin:0 0 10px;font-size:.8rem;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--suave)}
+nav.indice ol{margin:0;padding-left:20px;columns:2;column-gap:32px}
+nav.indice li{margin-bottom:5px}
+nav.indice a{color:var(--marca);text-decoration:none}
+nav.indice a:hover{text-decoration:underline}
+
+section{
+  background:#fff;border:1px solid var(--linea);border-radius:12px;
+  padding:26px 28px;margin-bottom:22px;
+}
+section > h2{
+  margin:0 0 4px;font-size:1.3rem;display:flex;align-items:center;gap:12px;
+}
+.num{
+  background:var(--marca);color:#fff;width:32px;height:32px;flex:0 0 32px;
+  border-radius:50%;display:grid;place-items:center;font-size:.95rem;
+}
+.lead{color:var(--suave);margin:0 0 20px 44px;font-size:.93rem}
+
+h3{margin:24px 0 8px;font-size:1.02rem}
+h3:first-of-type{margin-top:6px}
+
+pre{
+  background:var(--codigo);color:#e6e9ef;padding:15px 17px;border-radius:9px;
+  overflow-x:auto;font-size:.85rem;line-height:1.6;margin:10px 0;
+  font-family:"Cascadia Code",Consolas,Monaco,monospace;
+}
+pre .c{color:#7f8a9e}       /* comentario */
+pre .k{color:#79c0ff}       /* palabra clave */
+pre .s{color:#a5d6a7}       /* texto */
+code{
+  background:#eef0f3;padding:1.5px 6px;border-radius:5px;
+  font-size:.87em;font-family:Consolas,Monaco,monospace;
+}
+
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.9rem}
+th,td{border:1px solid var(--linea);padding:9px 12px;text-align:left;
+  vertical-align:top}
+th{background:#f2f4f7;font-weight:600;font-size:.82rem;
+  text-transform:uppercase;letter-spacing:.03em;color:var(--suave)}
+
+.nota,.aviso,.peligro{
+  border-left:4px solid;border-radius:0 9px 9px 0;padding:13px 17px;
+  margin:15px 0;font-size:.91rem;
+}
+.nota{background:var(--ok-fondo);border-color:var(--ok)}
+.aviso{background:var(--alerta-fondo);border-color:var(--alerta)}
+.peligro{background:var(--error-fondo);border-color:var(--error)}
+.nota strong{color:var(--ok)}
+.aviso strong{color:var(--alerta)}
+.peligro strong{color:var(--error)}
+
+.arbol{
+  background:#fbfcfd;border:1px solid var(--linea);border-radius:9px;
+  padding:16px 18px;font-family:Consolas,Monaco,monospace;font-size:.83rem;
+  line-height:1.75;overflow-x:auto;
+}
+.arbol .dir{color:var(--marca);font-weight:600}
+.arbol .no{color:var(--error);font-weight:600}
+.arbol .cm{color:var(--suave)}
+
+.flujo{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:var(--marca-claro);border-radius:10px;padding:16px;margin:14px 0;
+}
+.flujo .caja{
+  background:#fff;border:1px solid #c5cae9;border-radius:8px;
+  padding:9px 14px;font-size:.84rem;text-align:center;flex:1;min-width:110px;
+}
+.flujo .caja b{display:block;font-size:.8rem;color:var(--marca)}
+.flujo .flecha{color:var(--marca);font-size:1.2rem;font-weight:700}
+
+footer{
+  text-align:center;color:var(--suave);font-size:.84rem;
+  padding:30px 20px 45px;line-height:1.8;
+}
+
+@media(max-width:700px){
+  nav.indice ol{columns:1}
+  section{padding:20px 18px}
+  .lead{margin-left:0}
+  .flujo{flex-direction:column}
+  .flujo .flecha{transform:rotate(90deg)}
+}
+@media print{
+  body{background:#fff}
+  section,nav.indice{border:1px solid #ccc;break-inside:avoid}
+  header{background:#fff;color:#000;border-bottom:2px solid #000}
+  header .tag{background:#eee;color:#000}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="tags">
+      <span class="tag">RAP 03 · Competencia 220501096</span>
+      <span class="tag">Ficha 3168431</span>
+      <span class="tag">Equipo: Ventas de Ropa</span>
+    </div>
+    <h1>Instalación, despliegue y publicación en GitHub</h1>
+    <div class="sub">
+      MVP Ventas de Ropa &middot; Qué hace cada archivo, cómo se instala,
+      cómo se conecta la base de datos y la API, y cómo subirlo al repositorio
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<nav class="indice">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#req">Lo que necesitas antes de empezar</a></li>
+    <li><a href="#arbol">Dónde va cada archivo y por qué</a></li>
+    <li><a href="#instalar">Instalación paso a paso</a></li>
+    <li><a href="#bd">Cómo se conecta la base de datos</a></li>
+    <li><a href="#api">Cómo se conecta la API REST</a></li>
+    <li><a href="#probar">Cómo verificar que todo quedó bien</a></li>
+    <li><a href="#errores">Errores frecuentes y su solución</a></li>
+    <li><a href="#git">Subir el proyecto a GitHub</a></li>
+    <li><a href="#equipo">Trabajar en equipo sobre el repositorio</a></li>
+    <li><a href="#sustentar">Preguntas de la sustentación</a></li>
+  </ol>
+</nav>
+
+
+<!-- ============================================================ 1 -->
+<section id="req">
+  <h2><span class="num">1</span> Lo que necesitas antes de empezar</h2>
+  <p class="lead">Todo esto viene incluido en XAMPP, menos Git.</p>
+
+  <table>
+    <tr><th>Herramienta</th><th>Versión</th><th>Para qué</th><th>¿Obligatorio?</th></tr>
+    <tr><td><strong>XAMPP</strong></td><td>8.x</td>
+        <td>Trae Apache, PHP y MySQL juntos</td><td>Sí</td></tr>
+    <tr><td>PHP</td><td>8.0 o más</td>
+        <td>Ejecuta el código del servidor</td><td>Viene en XAMPP</td></tr>
+    <tr><td>MySQL / MariaDB</td><td>10.x</td>
+        <td>Guarda los datos</td><td>Viene en XAMPP</td></tr>
+    <tr><td><strong>Git</strong></td><td>2.x</td>
+        <td>Subir el proyecto a GitHub</td><td>Solo para la sección 8</td></tr>
+    <tr><td>Navegador</td><td>Actual</td>
+        <td>Usar el sistema</td><td>Sí</td></tr>
+    <tr><td>Internet</td><td>—</td>
+        <td>Bootstrap y la tasa del dólar</td><td><strong>No</strong></td></tr>
+  </table>
+
+  <div class="nota">
+    <strong>Sin internet el sistema funciona igual.</strong>
+    La página se ve sin estilos y el precio en dólares sale aproximado
+    con su aviso, pero registrar, consultar, editar y eliminar funciona
+    completo. Esto se diseñó así a propósito: un servicio externo nunca
+    debe poder tumbar tu sistema.
+  </div>
+
+  <div class="aviso">
+    <strong>Revisa en qué puerto quedó tu MySQL.</strong> El proyecto viene
+    configurado en el 3306, que es el valor normal.
+    Para confirmar el tuyo: panel de XAMPP &rarr; fila de MySQL &rarr;
+    botón <code>Config</code> &rarr; <code>my.ini</code> &rarr; busca la
+    línea <code>port=</code>. Si el tuyo es 3306, cámbialo en
+    <code>config/conexion.php</code>.
+  </div>
+</section>
+
+
+<!-- ============================================================ 2 -->
+<section id="arbol">
+  <h2><span class="num">2</span> Dónde va cada archivo y por qué</h2>
+  <p class="lead">
+    Toda la carpeta va dentro de <code>htdocs</code>. La organización
+    no es capricho: separa configuración, componentes reutilizables y
+    recursos, que es justo lo que evalúa el instrumento de producto.
+  </p>
+
+  <div class="arbol">
+<span class="cm">C:\xampp\htdocs\</span>
+└── <span class="dir">mvp-ventas-ropa/</span>              <span class="cm">← toda la carpeta va aquí</span>
+    │
+    ├── <span class="dir">config/</span>            <span class="cm">CONFIGURACIÓN</span>
+    │   ├── conexion.php      <span class="no">← NO se sube a GitHub (tiene la clave)</span>
+    │   └── conexion.ejemplo.php  <span class="cm">← plantilla, esta SÍ se sube</span>
+    │
+    ├── <span class="dir">includes/</span>          <span class="cm">COMPONENTES REUTILIZABLES</span>
+    │   ├── sesion.php        <span class="cm">el "portero": controla quién entra</span>
+    │   ├── funciones.php     <span class="cm">validar, limpiar y dar formato</span>
+    │   ├── api_dolar.php     <span class="cm">consumo de la API REST (Guía 2)</span>
+    │   ├── cabecera.php      <span class="cm">parte de arriba de cada página</span>
+    │   └── pie.php           <span class="cm">parte de abajo de cada página</span>
+    │
+    ├── <span class="dir">assets/</span>            <span class="cm">RECURSOS</span>
+    │   ├── <span class="dir">css/</span>estilos.css
+    │   ├── <span class="dir">js/</span>validaciones.js
+    │   └── <span class="dir">img/</span>
+    │
+    ├── index.php             <span class="cm">puerta de entrada (solo redirige)</span>
+    │
+    ├── registrar.php         <span class="cm">formulario de alta   (CREATE 1/2)</span>
+    ├── guardar.php           <span class="cm">inserta en la base   (CREATE 2/2)</span>
+    ├── consultar.php         <span class="cm">listar y buscar      (READ)</span>
+    ├── editar.php            <span class="cm">formulario precargado (UPDATE 1/2)</span>
+    ├── actualizar.php        <span class="cm">aplica el cambio     (UPDATE 2/2)</span>
+    ├── eliminar.php          <span class="cm">confirma y elimina   (DELETE)</span>
+    ├── detalle.php           <span class="cm">ficha completa + precio en dólares</span>
+    ├── estadisticas.php      <span class="cm">consulta propia del proyecto</span>
+    ├── login.php             <span class="cm">inicio de sesión</span>
+    ├── logout.php            <span class="cm">cierre de sesión</span>
+    ├── pruebas.php           <span class="cm">pruebas automáticas (Guía 2)</span>
+    │
+    ├── base_datos.sql        <span class="cm">estructura de la base de datos</span>
+    ├── .gitignore            <span class="cm">qué NO sube Git</span>
+    ├── README.md             <span class="cm">documentación técnica</span>
+    ├── MANUAL_DE_USUARIO.md  <span class="cm">manual para quien usa el sistema</span>
+    └── INSTALACION.html      <span class="cm">este documento</span>
+  </div>
+
+  <h3>Por qué crear y actualizar llevan DOS archivos cada uno</h3>
+  <p>
+    Porque cada archivo hace <strong>una sola cosa</strong>. Uno muestra
+    el formulario, el otro escribe en la base de datos. Es la misma regla
+    de las carpetas, aplicada a los archivos.
+  </p>
+  <table>
+    <tr><th>Operación</th><th>Formulario</th><th>Escribe en la base</th></tr>
+    <tr><td>Crear</td><td><code>registrar.php</code></td><td><code>guardar.php</code></td></tr>
+    <tr><td>Leer</td><td colspan="2"><code>consultar.php</code> — solo lee, no necesita segundo archivo</td></tr>
+    <tr><td>Actualizar</td><td><code>editar.php</code></td><td><code>actualizar.php</code></td></tr>
+    <tr><td>Eliminar</td><td colspan="2"><code>eliminar.php</code> — confirma y borra</td></tr>
+  </table>
+  <div class="nota">
+    <strong>La ventaja se nota cuando algo falla.</strong>
+    ¿El formulario se ve mal? El problema está en <code>registrar.php</code>.
+    ¿El dato no se guarda? Está en <code>guardar.php</code>. No hay que
+    leer doscientas líneas para saber por dónde empezar a buscar.
+  </div>
+
+  <h3>El recorrido completo de un registro</h3>
+  <div class="flujo">
+    <div class="caja"><b>registrar.php</b>muestra el formulario</div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>guardar.php</b>valida e inserta</div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>consultar.php</b>muestra la lista</div>
+  </div>
+  <p style="font-size:.88rem;color:var(--suave)">
+    Si la validación falla, <code>guardar.php</code> devuelve al usuario a
+    <code>registrar.php</code> con los errores <em>y con lo que ya había
+    escrito</em>, para que no tenga que llenarlo todo otra vez.
+  </p>
+
+  <h3>Por qué la carpeta va exactamente en htdocs</h3>
+  <p>
+    Apache solo puede mostrar lo que esté dentro de <code>htdocs</code>.
+    Si dejas el proyecto en el Escritorio y abres <code>index.php</code>
+    con doble clic, el navegador te muestra el código PHP en texto plano
+    en vez de ejecutarlo, porque nadie lo está procesando.
+  </p>
+
+  <div class="flujo">
+    <div class="caja"><b>1. Navegador</b>pide la página</div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>2. Apache</b>la busca en htdocs</div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>3. PHP</b>ejecuta el código</div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>4. MySQL</b>entrega los datos</div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>5. Navegador</b>muestra el HTML</div>
+  </div>
+  <p style="font-size:.88rem;color:var(--suave)">
+    Entender este recorrido resuelve casi todos los errores: si algo
+    falla, la pregunta es <em>¿en cuál de los 5 pasos se rompió?</em>
+  </p>
+</section>
+
+
+<!-- ============================================================ 3 -->
+<section id="instalar">
+  <h2><span class="num">3</span> Instalación paso a paso</h2>
+  <p class="lead">Seis pasos. No te saltes el cuarto.</p>
+
+  <h3>Paso 1 — Copiar el proyecto a htdocs</h3>
+  <p>Si tienes el ZIP, descomprímelo ahí. Si vas a clonarlo de GitHub:</p>
+<pre><span class="c"># Entrar a la carpeta de XAMPP</span>
+<span class="k">cd</span> C:\xampp\htdocs
+
+<span class="c"># Descargar el proyecto</span>
+<span class="k">git</span> clone https://github.com/TU-USUARIO/mvp-ventas-ropa.git</pre>
+
+  <h3>Paso 2 — Encender Apache y MySQL</h3>
+  <p>
+    Abre el panel de XAMPP y pulsa <strong>Start</strong> en las dos
+    filas. Ambas deben quedar en verde.
+  </p>
+  <div class="aviso">
+    <strong>Si Apache no arranca:</strong> casi siempre es que Skype o
+    algún otro programa está usando el puerto 80. Ciérralo y reintenta,
+    o cambia el puerto de Apache desde <code>Config → httpd.conf</code>.
+  </div>
+
+  <h3>Paso 3 — Crear la base de datos</h3>
+  <ol>
+    <li>Entra a <code>http://localhost/phpmyadmin</code></li>
+    <li>Pestaña <strong>Importar</strong></li>
+    <li><strong>Seleccionar archivo</strong> &rarr; busca <code>base_datos.sql</code></li>
+    <li>Pulsa <strong>Continuar</strong></li>
+  </ol>
+  <p>
+    Debe aparecer la base <code>mvp_ropa</code> a la izquierda, con las
+    tablas <code>prendas</code> (6 registros de ejemplo) y
+    <code>usuarios</code> (1 registro).
+  </p>
+
+  <h3>Paso 4 — Configurar la conexión ← el que más se olvida</h3>
+
+  <div class="nota">
+    <strong>¿Descomprimiste el ZIP o clonaste de GitHub?</strong><br>
+    <strong>Desde el ZIP:</strong> <code>config/conexion.php</code> ya
+    viene listo con los valores de XAMPP (root, sin contraseña, puerto
+    3306). Solo verifica que el puerto coincida con el tuyo y pasa al
+    paso 5.<br>
+    <strong>Desde GitHub:</strong> el archivo no existe — está bloqueado
+    en <code>.gitignore</code> por seguridad. Tienes que crearlo con los
+    pasos de abajo. <em>Esto es correcto, no es un error del
+    repositorio.</em>
+  </div>
+
+  <p>Para crearlo desde cero:</p>
+<pre><span class="c"># Windows</span>
+<span class="k">cd</span> C:\xampp\htdocs\mvp-ventas-ropa\config
+<span class="k">copy</span> conexion.ejemplo.php conexion.php
+
+<span class="c"># Linux o Mac</span>
+<span class="k">cd</span> ~/htdocs/mvp-ventas-ropa/config
+<span class="k">cp</span> conexion.ejemplo.php conexion.php</pre>
+
+  <p>Ábrelo y escribe tus datos:</p>
+<pre><span class="k">define</span>(<span class="s">'DB_SERVIDOR'</span>, <span class="s">'127.0.0.1'</span>);  <span class="c">// este mismo computador</span>
+<span class="k">define</span>(<span class="s">'DB_USUARIO'</span>,  <span class="s">'root'</span>);       <span class="c">// en XAMPP normalmente root</span>
+<span class="k">define</span>(<span class="s">'DB_CLAVE'</span>,    <span class="s">''</span>);           <span class="c">// en XAMPP normalmente vacía</span>
+<span class="k">define</span>(<span class="s">'DB_NOMBRE'</span>,   <span class="s">'mvp_ropa'</span>);   <span class="c">// la que acabas de importar</span>
+<span class="k">define</span>(<span class="s">'DB_PUERTO'</span>,   <span class="s">3306</span>);         <span class="c">// ← REVISA EL TUYO</span></pre>
+
+  <h3>Paso 5 — Abrir el sistema</h3>
+<pre>http://localhost/mvp-ventas-ropa/</pre>
+
+  <h3>Paso 6 — Entrar</h3>
+  <table>
+    <tr><th>Usuario</th><th>Contraseña</th></tr>
+    <tr><td><code>admin</code></td><td><code>admin123</code></td></tr>
+  </table>
+  <div class="aviso">
+    <strong>Esta contraseña es solo de práctica.</strong> En un sistema
+    real se cambia antes de ponerlo a funcionar. Que venga escrita en la
+    pantalla de entrada también es solo para clase.
+  </div>
+</section>
+
+
+<!-- ============================================================ 4 -->
+<section id="bd">
+  <h2><span class="num">4</span> Cómo se conecta la base de datos</h2>
+  <p class="lead">
+    Un solo archivo sabe conectarse; todos los demás se lo piden a él.
+  </p>
+
+  <h3>Los cinco datos de la conexión</h3>
+  <table>
+    <tr><th>Dato</th><th>Valor</th><th>Qué significa</th></tr>
+    <tr><td><code>DB_SERVIDOR</code></td><td><code>127.0.0.1</code></td>
+        <td>En qué computador está MySQL. Es "este mismo"</td></tr>
+    <tr><td><code>DB_USUARIO</code></td><td><code>root</code></td>
+        <td>Con qué cuenta entramos</td></tr>
+    <tr><td><code>DB_CLAVE</code></td><td><em>(vacía)</em></td>
+        <td>La contraseña de esa cuenta</td></tr>
+    <tr><td><code>DB_NOMBRE</code></td><td><code>mvp_ropa</code></td>
+        <td>Cuál de todas las bases usamos</td></tr>
+    <tr><td><code>DB_PUERTO</code></td><td><code>3306</code></td>
+        <td>Por cuál "puerta" escucha MySQL</td></tr>
+  </table>
+
+  <h3>Cómo lo usa cada página</h3>
+<pre><span class="c">// Una sola línea al principio del archivo…</span>
+<span class="k">require_once</span> <span class="s">'config/conexion.php'</span>;
+
+<span class="c">// …y ya está disponible la variable $conexion</span>
+$consulta = $conexion-&gt;prepare(<span class="s">'SELECT * FROM prendas WHERE id = ?'</span>);</pre>
+
+  <div class="nota">
+    <strong>Por qué está en un solo archivo.</strong> Si mañana cambia
+    la contraseña de MySQL, se corrige aquí una vez y todo el sistema
+    sigue funcionando. Si los datos estuvieran repetidos en cada página,
+    habría que corregir 9 archivos y seguro se escapa alguno.
+  </div>
+
+  <h3>Por qué utf8mb4 aparece dos veces</h3>
+  <p>Porque son dos cosas distintas, y las dos hacen falta:</p>
+  <table>
+    <tr><th>Dónde</th><th>Qué hace</th><th>Si falta…</th></tr>
+    <tr><td>En <code>base_datos.sql</code></td>
+        <td>Define cómo GUARDA los datos la base</td>
+        <td>Las tildes se guardan dañadas</td></tr>
+    <tr><td><code>$conexion-&gt;set_charset()</code></td>
+        <td>Define en qué "idioma" se hablan PHP y MySQL</td>
+        <td>Las tildes llegan dañadas aunque estén bien guardadas</td></tr>
+  </table>
+  <p>
+    Síntoma típico de que falta una de las dos: ves
+    <code>CamisÃ³n</code> en vez de <code>Camisón</code>.
+  </p>
+
+  <h3>Por qué todas las consultas usan bind_param</h3>
+  <div class="peligro">
+    <strong>Nunca se pega el dato dentro del texto de la consulta.</strong>
+    Si se escribiera <code>"WHERE usuario = '$usuario'"</code>, alguien
+    podría escribir <code>' OR '1'='1</code> en el formulario y entrar
+    sin contraseña. Eso es una <strong>inyección SQL</strong>.
+  </div>
+  <p>
+    Con la consulta preparada, MySQL recibe primero la ORDEN (con
+    <code>?</code> en los huecos) y después los DATOS por separado. Como
+    ya sabe cuál es la orden antes de ver los datos, trata lo que llega
+    como texto y nunca como instrucción.
+  </p>
+<pre><span class="c">// 1. La orden, con un hueco</span>
+$consulta = $conexion-&gt;prepare(<span class="s">'SELECT * FROM prendas WHERE nombre = ?'</span>);
+
+<span class="c">// 2. El dato, por aparte. La "s" dice que es texto (string)</span>
+$consulta-&gt;bind_param(<span class="s">'s'</span>, $nombre);
+
+<span class="c">// 3. Ejecutar</span>
+$consulta-&gt;execute();</pre>
+
+  <table>
+    <tr><th>Letra</th><th>Tipo</th><th>Se usa para</th></tr>
+    <tr><td><code>s</code></td><td>string</td><td>texto: nombre, talla, color</td></tr>
+    <tr><td><code>i</code></td><td>integer</td><td>enteros: id, stock</td></tr>
+    <tr><td><code>d</code></td><td>double</td><td>decimales: precio</td></tr>
+    <tr><td><code>b</code></td><td>blob</td><td>archivos binarios</td></tr>
+  </table>
+  <div class="aviso">
+    <strong>El orden de las letras es sagrado.</strong> Debe coincidir
+    exactamente con el orden de las variables. En <code>guardar.php</code>
+    es <code>"sssdis"</code>: nombre(s) talla(s) color(s) precio(d)
+    stock(i) imagen(s). Si cambias una de puesto, el dato se guarda en
+    la columna equivocada. Es el error más común de la sesión.
+  </div>
+</section>
+
+
+<!-- ============================================================ 5 -->
+<section id="api">
+  <h2><span class="num">5</span> Cómo se conecta la API REST</h2>
+  <p class="lead">
+    Contenido de la Guía 2. El código está en
+    <code>includes/api_dolar.php</code> y se ve funcionando en
+    <code>detalle.php</code>.
+  </p>
+
+  <h3>Qué es una API REST</h3>
+  <table>
+    <tr><th></th><th>Página web normal</th><th>API REST</th></tr>
+    <tr><td>Devuelve</td><td>HTML</td><td>JSON</td></tr>
+    <tr><td>Para quién</td><td>Para que lo LEA una persona</td>
+        <td>Para que lo USE un programa</td></tr>
+    <tr><td>Se ve</td><td>Bonita, con colores</td>
+        <td>Texto con llaves y comas</td></tr>
+  </table>
+
+  <h3>El servicio que usamos</h3>
+<pre>https://open.er-api.com/v6/latest/USD</pre>
+  <p>Gratuito, sin registro ni clave. Devuelve algo así:</p>
+<pre>{
+  <span class="s">"result"</span>: <span class="s">"success"</span>,
+  <span class="s">"base_code"</span>: <span class="s">"USD"</span>,
+  <span class="s">"rates"</span>: {
+      <span class="s">"EUR"</span>: 0.92,
+      <span class="s">"COP"</span>: 4150.25,   <span class="c">← este es el dato que queremos</span>
+      <span class="s">"MXN"</span>: 17.05
+  }
+}</pre>
+  <p>
+    El dato está dentro de <code>rates</code>, en la casilla
+    <code>COP</code>. Por eso en PHP se lee así:
+  </p>
+<pre>$datos = json_decode($respuesta, <span class="k">true</span>);
+$tasa  = $datos[<span class="s">'rates'</span>][<span class="s">'COP'</span>];</pre>
+
+  <h3>Las cuatro decisiones de diseño</h3>
+  <p>Esta es la parte que más preguntan en la sustentación:</p>
+
+  <table>
+    <tr><th>Decisión</th><th>Por qué</th></tr>
+    <tr><td><strong>Límite de 5 segundos</strong><br>
+            <code>CURLOPT_TIMEOUT</code></td>
+        <td>Si la API está caída, sin este límite la página se quedaría
+            cargando para siempre y el usuario no podría ni ver su
+            inventario. <strong>Un servicio externo jamás puede bloquear
+            tu sistema.</strong></td></tr>
+    <tr><td><strong>Caché de 1 hora</strong></td>
+        <td>Leer un archivo del disco tarda milésimas; consultar internet
+            tarda segundos. Además, si 21 aprendices recargan 50 veces
+            serían 1.050 consultas a un servicio gratuito ajeno, y muchas
+            APIs bloquean por abuso. La tasa del dólar no cambia cada
+            segundo.</td></tr>
+    <tr><td><strong>Valor de respaldo</strong></td>
+        <td>Si la API falla, se muestra un aproximado <em>avisando que lo
+            es</em>, en vez de romper la página. Mostrarlo como exacto
+            sería engañar al usuario.</td></tr>
+    <tr><td><strong>Se consulta DESPUÉS de la base de datos</strong></td>
+        <td>Lo esencial (la prenda) no depende de lo opcional (el dólar).
+            Si fuera al revés, una API caída dejaría al usuario sin ver
+            su propia información.</td></tr>
+  </table>
+
+  <h3>Los tres errores que hay que revisar</h3>
+  <p>
+    Un error de principiante es revisar solo si hubo respuesta. Pero un
+    servidor puede responder perfectamente… con un mensaje de error.
+    Por eso se revisan tres cosas distintas:
+  </p>
+  <table>
+    <tr><th>#</th><th>Qué se revisa</th><th>Cómo</th></tr>
+    <tr><td>1</td><td>¿Hubo conexión?</td>
+        <td><code>$respuesta === false</code></td></tr>
+    <tr><td>2</td><td>¿El servidor respondió con éxito?</td>
+        <td><code>$codigo !== 200</code></td></tr>
+    <tr><td>3</td><td>¿Lo que llegó es JSON válido y trae el dato?</td>
+        <td><code>json_last_error()</code> e <code>isset()</code></td></tr>
+  </table>
+
+  <div class="nota">
+    <strong>Nunca pongas <code>CURLOPT_SSL_VERIFYPEER</code> en false.</strong>
+    En muchos tutoriales de internet aparece así "para que funcione",
+    pero eso desactiva la verificación del certificado y permite que
+    alguien se haga pasar por la API. Si da error de certificado, se
+    soluciona instalando el certificado, no apagando la verificación.
+  </div>
+</section>
+
+
+<!-- ============================================================ 6 -->
+<section id="probar">
+  <h2><span class="num">6</span> Cómo verificar que todo quedó bien</h2>
+  <p class="lead">Lista de comprobación antes de entregar o sustentar.</p>
+
+  <h3>Pruebas automáticas</h3>
+<pre>http://localhost/mvp-ventas-ropa/pruebas.php</pre>
+  <p>O desde la terminal:</p>
+<pre><span class="k">php</span> pruebas.php</pre>
+  <p>
+    Son <strong>29 verificaciones</strong>. Todas deben pasar. Si alguna
+    falla, el reporte dice exactamente qué se esperaba y qué se obtuvo.
+  </p>
+
+  <h3>Recorrido manual</h3>
+  <table>
+    <tr><th>#</th><th>Qué hacer</th><th>Qué debe pasar</th></tr>
+    <tr><td>1</td><td>Escribir <code>consultar.php</code> sin haber entrado</td>
+        <td>Te devuelve al login</td></tr>
+    <tr><td>2</td><td>Entrar con una clave equivocada</td>
+        <td>Aviso rojo, no entra</td></tr>
+    <tr><td>3</td><td>Entrar con <code>admin/admin123</code></td>
+        <td>Muestra el inventario con 6 prendas</td></tr>
+    <tr><td>4</td><td>Registrar una prenda</td>
+        <td>Aviso verde y aparece de primera</td></tr>
+    <tr><td>5</td><td>Guardar el formulario vacío</td>
+        <td>Marca en rojo los campos y NO guarda</td></tr>
+    <tr><td>6</td><td>Escribir el precio como <code>45.000</code></td>
+        <td>Lo rechaza pidiendo el número sin puntos</td></tr>
+    <tr><td>7</td><td>Buscar "cami"</td>
+        <td>Aparecen camisas y camisetas</td></tr>
+    <tr><td>8</td><td>Abrir el detalle de una prenda</td>
+        <td>Muestra el precio en dólares</td></tr>
+    <tr><td>9</td><td>Editar una prenda</td>
+        <td>El formulario ya trae los datos actuales</td></tr>
+    <tr><td>10</td><td>Eliminar una prenda</td>
+        <td>Pide confirmación mostrando cuál</td></tr>
+    <tr><td>11</td><td>Abrir Estadísticas</td>
+        <td>Totales, barras por talla y lista de por agotarse</td></tr>
+    <tr><td>12</td><td>Cerrar sesión y volver atrás con el navegador</td>
+        <td>No deja volver a entrar</td></tr>
+  </table>
+
+  <h3>Prueba de seguridad para la sustentación</h3>
+  <p>
+    Registra una prenda con este nombre y muestra qué pasa:
+  </p>
+<pre>&lt;script&gt;alert('hackeado')&lt;/script&gt;</pre>
+  <p>
+    <strong>Debe verse como texto normal en la lista</strong>, no debe
+    salir ninguna ventana emergente. Eso demuestra que
+    <code>limpiar()</code> está protegiendo contra XSS. Es la
+    demostración más contundente que puedes hacer frente al evaluador.
+  </p>
+</section>
+
+
+<!-- ============================================================ 7 -->
+<section id="errores">
+  <h2><span class="num">7</span> Errores frecuentes y su solución</h2>
+  <p class="lead">En formato síntoma → causa → cómo se verifica.</p>
+
+  <table>
+    <tr><th>Síntoma</th><th>Causa probable</th><th>Cómo se verifica y arregla</th></tr>
+
+    <tr><td><strong>Se ve el código PHP en pantalla</strong>,
+            como texto plano</td>
+        <td>Abriste el archivo con doble clic, sin pasar por Apache</td>
+        <td>Entra por <code>http://localhost/mvp-ventas-ropa/</code>, no por la
+            carpeta. El archivo debe estar dentro de htdocs</td></tr>
+
+    <tr><td><strong>"No se pudo conectar a la base de datos"</strong></td>
+        <td>MySQL apagado, o el puerto está mal</td>
+        <td>1. Revisa que MySQL esté verde en XAMPP<br>
+            2. Compara <code>DB_PUERTO</code> con el de tu
+            <code>my.ini</code> (3307 vs 3306)</td></tr>
+
+    <tr><td><strong>"Unknown database 'mvp_ropa'"</strong></td>
+        <td>No importaste <code>base_datos.sql</code></td>
+        <td>phpMyAdmin → Importar → <code>base_datos.sql</code></td></tr>
+
+    <tr><td><strong>"Access denied for user 'root'"</strong></td>
+        <td>Usuario o clave equivocados</td>
+        <td>En XAMPP normalmente es <code>root</code> con clave vacía.
+            Revisa <code>config/conexion.php</code></td></tr>
+
+    <tr><td><strong>"Failed to open stream: config/conexion.php"</strong></td>
+        <td>No creaste el archivo de conexión</td>
+        <td>Copia <code>conexion.ejemplo.php</code> como
+            <code>conexion.php</code>. Es el paso 4 de la instalación</td></tr>
+
+    <tr><td><strong>Pantalla completamente en blanco</strong></td>
+        <td>Error fatal de PHP que no se está mostrando</td>
+        <td>Revisa <code>C:\xampp\apache\logs\error.log</code>. Ahí queda
+            escrito el error con su número de línea</td></tr>
+
+    <tr><td><strong>"Headers already sent"</strong></td>
+        <td>Se imprimió algo antes de un <code>header()</code></td>
+        <td>Revisa que no haya espacios ni líneas en blanco ANTES del
+            <code>&lt;?php</code> del archivo</td></tr>
+
+    <tr><td><strong>Las tildes se ven como <code>CamisÃ³n</code></strong></td>
+        <td>Falta el charset en algún punto</td>
+        <td>Verifica las tres cosas: la base en utf8mb4, el
+            <code>set_charset('utf8mb4')</code> y el
+            <code>&lt;meta charset="UTF-8"&gt;</code></td></tr>
+
+    <tr><td><strong>La página se ve sin colores ni estilos</strong></td>
+        <td>No hay internet: no cargó Bootstrap desde el CDN</td>
+        <td>Conéctate, o descarga <code>bootstrap.min.css</code> y
+            guárdalo en <code>assets/css/</code> cambiando el enlace</td></tr>
+
+    <tr><td><strong>El precio en dólares sale amarillo</strong></td>
+        <td>No hay internet o la API no respondió</td>
+        <td><strong>No es un error.</strong> El sistema está funcionando
+            como se diseñó: muestra un aproximado y avisa</td></tr>
+
+    <tr><td><strong>Se guardó el dato en la columna equivocada</strong></td>
+        <td>Las letras de <code>bind_param</code> están desordenadas</td>
+        <td>Cuenta uno por uno: cada <code>?</code> tiene su letra, en el
+            mismo orden que las variables</td></tr>
+
+    <tr><td><strong>Al apretar F5 se guardó dos veces la prenda</strong></td>
+        <td>Falta el <code>exit;</code> después del
+            <code>header()</code></td>
+        <td>Todo <code>header('Location: ...')</code> debe llevar
+            <code>exit;</code> inmediatamente después</td></tr>
+  </table>
+
+  <div class="nota">
+    <strong>Método para diagnosticar cualquier error nuevo:</strong>
+    mira el diagrama de los 5 pasos de la sección 2 y pregúntate en cuál
+    se rompió. ¿Apache no encontró el archivo? ¿PHP falló? ¿MySQL no
+    respondió? Ubicar el paso reduce el problema a la mitad.
+  </div>
+</section>
+
+
+<!-- ============================================================ 8 -->
+<section id="git">
+  <h2><span class="num">8</span> Subir el proyecto a GitHub</h2>
+  <p class="lead">
+    El repositorio con historial de commits es requisito de la evidencia
+    de producto. Sigue el orden exacto.
+  </p>
+
+  <h3>Paso 1 — Configurar Git (solo la primera vez en tu computador)</h3>
+<pre><span class="k">git</span> config --global user.name <span class="s">"Tu Nombre Completo"</span>
+<span class="k">git</span> config --global user.email <span class="s">"tucorreo@ejemplo.com"</span></pre>
+  <div class="aviso">
+    <strong>Usa el mismo correo de tu cuenta de GitHub.</strong> Si usas
+    otro, los commits aparecen como de un desconocido y no se ve tu
+    aporte en el historial. El instrumento de producto evalúa
+    precisamente que se evidencien los aportes de todos los integrantes.
+  </div>
+
+  <h3>Paso 2 — Crear el repositorio en GitHub</h3>
+  <ol>
+    <li>Entra a <a href="https://github.com">github.com</a> e inicia sesión</li>
+    <li>Botón verde <strong>New</strong> (o el <strong>+</strong> arriba a la derecha)</li>
+    <li><strong>Repository name:</strong> <code>mvp-ventas-ropa</code></li>
+    <li><strong>Description:</strong> <em>Sistema de inventario para tienda de ropa — Proyecto formativo SENA ficha 3168431</em></li>
+    <li>Déjalo en <strong>Public</strong> (para que el instructor pueda verlo)</li>
+    <li><strong>NO marques</strong> "Add a README file" — ya tenemos uno</li>
+    <li>Pulsa <strong>Create repository</strong></li>
+  </ol>
+
+  <h3>Paso 3 — Verificar el .gitignore ANTES de nada</h3>
+  <div class="peligro">
+    <strong>Este es el paso crítico.</strong> Si subes
+    <code>config/conexion.php</code> por error, la contraseña queda en
+    el historial de GitHub <em>para siempre</em>. Borrarla después no la
+    quita del historial: toca cambiar la contraseña de verdad.
+  </div>
+  <p>Comprueba que el archivo <code>.gitignore</code> existe y contiene esta línea:</p>
+<pre>config/conexion.php</pre>
+
+  <h3>Paso 4 — Preparar el proyecto</h3>
+<pre><span class="c"># Entrar a la carpeta del proyecto</span>
+<span class="k">cd</span> C:\xampp\htdocs\mvp-ventas-ropa
+
+<span class="c"># Crear el repositorio local</span>
+<span class="k">git</span> init
+
+<span class="c"># Agregar todos los archivos (Git respeta el .gitignore)</span>
+<span class="k">git</span> add .
+
+<span class="c"># ← VERIFICAR ANTES DE CONTINUAR</span>
+<span class="k">git</span> status</pre>
+
+  <div class="peligro">
+    <strong>Detente aquí y lee la lista que muestra
+    <code>git status</code>.</strong><br>
+    <code>config/conexion.php</code> <strong>NO</strong> puede aparecer.<br>
+    <code>config/conexion.ejemplo.php</code> <strong>SÍ</strong> debe aparecer.<br><br>
+    Si <code>conexion.php</code> aparece en la lista, el
+    <code>.gitignore</code> está mal. <strong>No sigas.</strong>
+    Arréglalo primero y vuelve a correr <code>git add .</code>
+  </div>
+
+  <h3>Paso 5 — Primer commit</h3>
+<pre><span class="k">git</span> commit -m <span class="s">"Primer commit: MVP Ventas de Ropa completo"</span></pre>
+  <p>
+    Un <strong>commit</strong> es una foto del proyecto en ese momento.
+    El mensaje explica qué cambió. El historial de commits es lo que
+    demuestra el proceso de trabajo.
+  </p>
+
+  <h3>Paso 6 — Conectar con GitHub y subir</h3>
+<pre><span class="c"># Renombrar la rama principal a main (el estándar actual)</span>
+<span class="k">git</span> branch -M main
+
+<span class="c"># Conectar con el repositorio remoto (usa TU usuario)</span>
+<span class="k">git</span> remote add origin https://github.com/TU-USUARIO/mvp-ventas-ropa.git
+
+<span class="c"># Subir</span>
+<span class="k">git</span> push -u origin main</pre>
+
+  <div class="aviso">
+    <strong>Si te pide usuario y contraseña:</strong> GitHub ya no acepta
+    la contraseña de la cuenta desde la terminal. Necesitas un
+    <strong>token</strong>: GitHub → tu foto → Settings → Developer
+    settings → Personal access tokens → Tokens (classic) → Generate new
+    token → marca <code>repo</code> → genera y <strong>cópialo</strong>.
+    Ese token se pega donde pide la contraseña. Solo se ve una vez.
+  </div>
+
+  <h3>Paso 7 — Verificar en GitHub</h3>
+  <p>Recarga la página de tu repositorio. Comprueba:</p>
+  <table>
+    <tr><th>Revisar</th><th>Debe estar así</th></tr>
+    <tr><td><code>config/conexion.php</code></td>
+        <td><strong style="color:var(--error)">NO debe aparecer</strong></td></tr>
+    <tr><td><code>config/conexion.ejemplo.php</code></td>
+        <td><strong style="color:var(--ok)">Sí debe aparecer</strong></td></tr>
+    <tr><td><code>README.md</code></td>
+        <td>Se ve formateado debajo de los archivos</td></tr>
+    <tr><td><code>base_datos.sql</code></td>
+        <td>Presente</td></tr>
+    <tr><td><code>.gitignore</code></td>
+        <td>Presente</td></tr>
+  </table>
+
+  <h3>Comandos del día a día</h3>
+<pre><span class="c"># Ver qué cambió</span>
+<span class="k">git</span> status
+
+<span class="c"># Guardar los cambios</span>
+<span class="k">git</span> add .
+<span class="k">git</span> commit -m <span class="s">"Descripción de lo que hiciste"</span>
+<span class="k">git</span> push
+
+<span class="c"># Traer lo que subieron los compañeros</span>
+<span class="k">git</span> pull
+
+<span class="c"># Ver el historial</span>
+<span class="k">git</span> log --oneline</pre>
+
+  <h3>Cómo escribir buenos mensajes de commit</h3>
+  <table>
+    <tr><th style="color:var(--ok)">✓ Así sí</th><th style="color:var(--error)">✗ Así no</th></tr>
+    <tr><td><code>Agrega validación de precio negativo</code></td>
+        <td><code>cambios</code></td></tr>
+    <tr><td><code>Corrige el orden de bind_param en editar.php</code></td>
+        <td><code>arreglos</code></td></tr>
+    <tr><td><code>Agrega la vista de estadísticas por talla</code></td>
+        <td><code>asdasd</code></td></tr>
+    <tr><td><code>Documenta el consumo de la API del dólar</code></td>
+        <td><code>update</code></td></tr>
+  </table>
+  <p style="font-size:.88rem;color:var(--suave)">
+    Regla práctica: el mensaje debe completar la frase
+    <em>"Este commit…"</em>. En presente y diciendo QUÉ se hizo.
+  </p>
+</section>
+
+
+<!-- ============================================================ 9 -->
+<section id="equipo">
+  <h2><span class="num">9</span> Trabajar en equipo sobre el repositorio</h2>
+  <p class="lead">
+    Son 6 integrantes sobre el mismo proyecto. Sin acuerdos, se pisan
+    el trabajo.
+  </p>
+
+  <h3>Cómo se suman los demás integrantes</h3>
+  <p>
+    El dueño del repositorio los agrega: <strong>Settings → Collaborators
+    → Add people</strong>. Cada uno clona con:
+  </p>
+<pre><span class="k">cd</span> C:\xampp\htdocs
+<span class="k">git</span> clone https://github.com/USUARIO-DUEÑO/mvp-ventas-ropa.git
+<span class="k">cd</span> mvp-ventas-ropa
+
+<span class="c"># Cada quien crea SU propio archivo de conexión</span>
+<span class="k">cd</span> config
+<span class="k">copy</span> conexion.ejemplo.php conexion.php</pre>
+  <div class="nota">
+    <strong>Cada integrante crea su propio <code>conexion.php</code>.</strong>
+    Ese archivo nunca viaja por Git, y está bien que así sea: cada
+    computador puede tener un puerto o una clave distinta.
+  </div>
+
+  <h3>La rutina diaria</h3>
+  <div class="flujo">
+    <div class="caja"><b>1. Antes de empezar</b><code>git pull</code></div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>2. Trabajar</b>programar</div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>3. Guardar</b><code>git add .</code><br><code>git commit -m "…"</code></div>
+    <span class="flecha">&rarr;</span>
+    <div class="caja"><b>4. Compartir</b><code>git push</code></div>
+  </div>
+
+  <div class="aviso">
+    <strong>Haz <code>git pull</code> ANTES de empezar a programar, no
+    después.</strong> Si programas dos horas y al final haces pull,
+    seguro te chocas con lo que subió un compañero. Si haces pull
+    primero, arrancas desde lo último.
+  </div>
+
+  <h3>Cuando aparece un conflicto</h3>
+  <p>
+    Un conflicto pasa cuando dos personas modificaron las mismas líneas.
+    Git no puede decidir cuál vale y te marca el archivo así:
+  </p>
+<pre>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+$precio = 45000;        <span class="c">← lo que TÚ escribiste</span>
+=======
+$precio = 50000;        <span class="c">← lo que escribió tu compañero</span>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</pre>
+  <p>Para resolverlo:</p>
+  <ol>
+    <li>Abre el archivo y busca las marcas <code>&lt;&lt;&lt;</code></li>
+    <li><strong>Habla con tu compañero</strong> y decidan cuál queda (o si se combinan)</li>
+    <li>Borra las tres líneas de marcas y deja solo el código correcto</li>
+    <li><code>git add .</code> y <code>git commit -m "Resuelve conflicto en X"</code></li>
+  </ol>
+  <div class="peligro">
+    <strong>Nunca borres el trabajo del otro sin hablar con él.</strong>
+    Un conflicto no es un problema técnico, es un problema de
+    comunicación del equipo. Se resuelve hablando.
+  </div>
+
+  <h3>Cómo repartirse el trabajo para chocar menos</h3>
+  <table>
+    <tr><th>Integrante</th><th>Archivos</th></tr>
+    <tr><td>1</td><td><code>login.php</code>, <code>logout.php</code>, <code>includes/sesion.php</code></td></tr>
+    <tr><td>2</td><td><code>consultar.php</code> (listar y buscar)</td></tr>
+    <tr><td>3</td><td><code>registrar.php</code>, <code>guardar.php</code></td></tr>
+    <tr><td>4</td><td><code>editar.php</code>, <code>actualizar.php</code>, <code>eliminar.php</code></td></tr>
+    <tr><td>5</td><td><code>detalle.php</code>, <code>includes/api_dolar.php</code></td></tr>
+    <tr><td>6</td><td><code>estadisticas.php</code>, <code>pruebas.php</code></td></tr>
+  </table>
+  <p style="font-size:.88rem;color:var(--suave)">
+    Si cada uno trabaja en archivos distintos, casi nunca hay
+    conflictos. Los que sí se tocan entre todos
+    (<code>funciones.php</code>, <code>estilos.css</code>) se avisan por
+    el grupo antes de modificarlos.
+  </p>
+</section>
+
+
+<!-- ============================================================ 10 -->
+<section id="sustentar">
+  <h2><span class="num">10</span> Preguntas de la sustentación</h2>
+  <p class="lead">
+    Las que más caen, con la respuesta corta. El detalle completo está
+    en los comentarios de cada archivo.
+  </p>
+
+  <h3>¿Por qué se validan los datos dos veces, en JavaScript y en PHP?</h3>
+  <p>
+    Porque hacen cosas distintas. JavaScript corre en el computador del
+    usuario y se puede desactivar o saltar; valida por
+    <strong>comodidad</strong>, para avisar rápido sin recargar. PHP
+    corre en el servidor, donde el usuario no puede tocarlo; valida por
+    <strong>seguridad</strong>. Si tuviera que quedarme con una sola, me
+    quedo con la del servidor.
+  </p>
+
+  <h3>¿Qué es una consulta preparada y por qué la usan?</h3>
+  <p>
+    Es separar la orden de los datos: primero se manda la consulta con
+    <code>?</code> en los huecos y después los valores aparte. Como MySQL
+    ya sabe cuál es la orden antes de ver los datos, trata lo que llega
+    como texto y nunca como instrucción. Eso hace imposible la inyección
+    SQL.
+  </p>
+
+  <h3>¿Por qué la contraseña se guarda con password_hash?</h3>
+  <p>
+    Porque el hash es de una sola vía: no se puede devolver al original.
+    Si alguien roba la base de datos, no puede leer las contraseñas. Por
+    eso la columna es <code>VARCHAR(255)</code> y no
+    <code>VARCHAR(20)</code>: lo que se guarda no es la contraseña sino
+    su huella cifrada, que es mucho más larga.
+  </p>
+
+  <h3>¿Por qué el precio es DECIMAL y no FLOAT?</h3>
+  <p>
+    Porque FLOAT guarda números aproximados y con dinero eso produce
+    errores de centavos que se van acumulando. Con dinero siempre se usa
+    DECIMAL.
+  </p>
+
+  <h3>¿Por qué se redirige después de guardar?</h3>
+  <p>
+    Es el patrón PRG (Post-Redirect-Get). Si no se redirigiera y el
+    usuario apretara F5, el navegador volvería a enviar el formulario y
+    la prenda se guardaría dos veces.
+  </p>
+
+  <h3>¿Por qué eliminar pide confirmación?</h3>
+  <p>
+    Por dos razones. Para el usuario: borrar es irreversible y un clic
+    mal dado no puede costar un registro. Técnica: una acción que
+    modifica datos nunca debe ejecutarse con un enlace (GET), porque los
+    navegadores y buscadores visitan enlaces por su cuenta. El borrado
+    real solo ocurre por POST.
+  </p>
+
+  <h3>¿Qué pasa si la API del dólar no responde?</h3>
+  <p>
+    El sistema muestra un valor aproximado y <em>avisa que lo es</em>,
+    en vez de romperse. Además hay un límite de 5 segundos para que no
+    se quede cargando. Lo esencial no puede depender de un servicio de
+    terceros.
+  </p>
+
+  <h3>¿Por qué el archivo de conexión no se sube a GitHub?</h3>
+  <p>
+    Porque tiene la contraseña de la base de datos y GitHub es público.
+    Lo que sí se sube es <code>conexion.ejemplo.php</code>, con la misma
+    estructura pero sin datos reales. Es una práctica profesional
+    estándar: el código se comparte, las contraseñas no.
+  </p>
+
+  <h3>¿Qué significan las letras de bind_param?</h3>
+  <p>
+    Son el tipo de cada dato: <code>s</code> texto, <code>i</code> entero,
+    <code>d</code> decimal, <code>b</code> binario. Va una letra por cada
+    <code>?</code>, en el mismo orden. En <code>guardar.php</code> es
+    <code>"sssdis"</code>.
+  </p>
+
+  <h3>¿Qué diferencia hay entre COUNT, SUM y GROUP BY?</h3>
+  <p>
+    <code>COUNT</code> cuenta filas, <code>SUM</code> suma valores.
+    <code>GROUP BY</code> es lo que hace que esas cuentas se hagan por
+    grupos: sin él, <code>COUNT(*)</code> cuenta toda la tabla; con
+    <code>GROUP BY talla</code>, cuenta por cada talla por separado.
+  </p>
+
+  <div class="nota">
+    <strong>Consejo para sustentar:</strong> si te preguntan por una
+    línea que no recuerdas, ábrela y <em>lee el comentario en voz alta</em>.
+    Todo el código está comentado justamente para eso. Es mejor leer y
+    explicar con tus palabras que quedarte callado o inventar.
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <strong>MVP Ventas de Ropa</strong><br>
+  SENA · Centro de la Innovación Agroindustrial y de Servicios (CIAS) · Regional Boyacá<br>
+  Programación de Software (233104) · Ficha 3168431 · I.E. San Pedro Claver<br>
+  RAP 03 — Codificar el software · Competencia 220501096<br>
+  Instructor: Manuel Alejandro Ordóñez Hernández
+</footer>
+
+</body>
+</html>

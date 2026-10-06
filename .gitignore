@@ -1,0 +1,129 @@
+# =====================================================================
+#  ARCHIVO  : .gitignore
+#  PROYECTO : MVP Ventas de Ropa
+# ---------------------------------------------------------------------
+#  ¿QUÉ ES ESTE ARCHIVO?
+#  Es la lista de archivos y carpetas que Git debe IGNORAR, o sea, que
+#  NO se suben a GitHub.
+#
+#  ¿POR QUÉ SE NECESITA?
+#  Por tres razones:
+#
+#   1. SEGURIDAD — El archivo de conexión tiene la contraseña de la
+#      base de datos. GitHub es público: si se sube, cualquiera la ve.
+#      Esta es la razón más importante y la que evalúa el instrumento
+#      de producto.
+#
+#   2. LIMPIEZA — Los archivos que genera el sistema operativo
+#      (Thumbs.db en Windows, .DS_Store en Mac) no tienen nada que ver
+#      con el proyecto y ensucian el repositorio.
+#
+#   3. PESO — Las imágenes que suben los usuarios no son código. El
+#      repositorio debe tener el CÓDIGO, no los datos.
+#
+#  ¡OJO CON ESTO! .gitignore solo funciona con archivos que TODAVÍA no
+#  se han subido. Si ya subiste conexion.php por error, agregarlo aquí
+#  no lo borra de GitHub: hay que sacarlo con
+#      git rm --cached config/conexion.php
+#  y además CAMBIAR la contraseña, porque ya quedó en el historial.
+#
+#  El nombre empieza con punto a propósito: en Linux y Mac los archivos
+#  que empiezan con punto son archivos de configuración ocultos.
+# ---------------------------------------------------------------------
+#  SENA · CIAS Regional Boyacá · Programación de Software (233104)
+#  Ficha 3168431 · RAP 03 — Codificar el software · Comp. 220501096
+# =====================================================================
+
+
+# ---------------------------------------------------------------------
+# 1. CONFIGURACIÓN CON DATOS SENSIBLES  ← LO MÁS IMPORTANTE
+# ---------------------------------------------------------------------
+# Este archivo tiene usuario y contraseña de la base de datos.
+config/conexion.php
+
+# El signo ! significa "esta es una EXCEPCIÓN: esta sí súbela".
+# La plantilla SÍ se sube, porque no tiene datos reales y le sirve a
+# quien descargue el proyecto para saber qué debe configurar.
+!config/conexion.ejemplo.php
+
+# Archivos de variables de entorno (por si se usan más adelante)
+.env
+.env.local
+
+
+# ---------------------------------------------------------------------
+# 2. ARCHIVOS QUE CREA EL SISTEMA OPERATIVO
+# ---------------------------------------------------------------------
+# Windows
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
+
+
+# ---------------------------------------------------------------------
+# 3. ARCHIVOS DE LOS EDITORES DE CÓDIGO
+# ---------------------------------------------------------------------
+# Son configuraciones personales de cada programador. Si se suben,
+# cada integrante del equipo se las sobrescribe a los demás y genera
+# conflictos en cada commit.
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Archivos temporales que dejan algunos editores al guardar
+*~
+*.swp
+*.bak
+
+
+# ---------------------------------------------------------------------
+# 4. REGISTROS Y ARCHIVOS TEMPORALES
+# ---------------------------------------------------------------------
+# El asterisco * es un comodín: *.log significa "cualquier archivo
+# que termine en .log"
+*.log
+error_log
+/tmp/
+/cache/
+
+
+# ---------------------------------------------------------------------
+# 5. IMÁGENES SUBIDAS POR LOS USUARIOS
+# ---------------------------------------------------------------------
+# (Aplica cuando el equipo haga el RETO de subida de archivos.)
+#
+# Se ignora el CONTENIDO de la carpeta, pero se conserva la carpeta.
+#
+# ¿Por qué? Porque Git no guarda carpetas vacías. Si no hiciéramos
+# esto, al descargar el proyecto la carpeta no existiría y el sistema
+# daría error al intentar guardar la primera imagen.
+#
+# El truco: ignorar todo lo de adentro, pero NO el archivo .gitkeep,
+# que es un archivo vacío que existe solo para que la carpeta se suba.
+assets/img/subidas/*
+!assets/img/subidas/.gitkeep
+
+
+# ---------------------------------------------------------------------
+# 6. DEPENDENCIAS
+# ---------------------------------------------------------------------
+# Si más adelante el proyecto usa Composer, la carpeta vendor/ se
+# descarga sola con "composer install". No se sube porque puede pesar
+# cientos de megas y se puede reconstruir en cualquier momento.
+/vendor/
+/node_modules/
+
+
+# ---------------------------------------------------------------------
+# 7. COPIAS DE SEGURIDAD DE LA BASE DE DATOS
+# ---------------------------------------------------------------------
+# ¡CUIDADO! Una copia de seguridad contiene los DATOS REALES, incluidos
+# los usuarios y sus contraseñas cifradas. Nunca se sube.
+#
+# El archivo base_datos.sql SÍ se sube, pero ese es distinto: solo
+# tiene la ESTRUCTURA y unos datos de ejemplo inventados.
+*.sql.gz
+backup*.sql
+dump*.sql

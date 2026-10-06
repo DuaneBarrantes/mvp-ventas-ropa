@@ -1,0 +1,204 @@
+/* =====================================================================
+   ARCHIVO  : assets/css/estilos.css
+   PROYECTO : MVP Ventas de Ropa
+   ---------------------------------------------------------------------
+   ¿QUÉ HACE ESTE ARCHIVO?
+   Contiene NUESTROS estilos propios, los que Bootstrap no trae.
+
+   ¿POR QUÉ ES TAN CORTO?
+   Porque Bootstrap ya resuelve el 95% del diseño. Aquí solo van los
+   ajustes propios del proyecto. Reescribir lo que Bootstrap ya hace
+   sería trabajo perdido y además propenso a errores.
+
+   ORDEN DE CARGA — ¡IMPORTANTE!
+   Este archivo se carga DESPUÉS de Bootstrap en la cabecera. En CSS,
+   cuando dos reglas apuntan al mismo elemento con la misma fuerza,
+   GANA LA QUE SE CARGÓ DE ÚLTIMA. Por eso podemos modificar estilos de
+   Bootstrap sin pelear con él.
+
+   Si se cargara antes, nuestros cambios no se verían y pareceria que
+   el archivo "no funciona".
+   ---------------------------------------------------------------------
+   SENA · CIAS Regional Boyacá · Programación de Software (233104)
+   Ficha 3168431 · RAP 03 — Codificar el software · Comp. 220501096
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   VARIABLES DE COLOR
+   ---------------------------------------------------------------------
+   :root significa "la raíz del documento". Las variables que se definen
+   aquí se pueden usar en todo el archivo.
+
+   ¿PARA QUÉ SIRVE? Si mañana se cambia el color principal del sistema,
+   se cambia AQUÍ una sola vez y cambia en todas partes. Sin variables
+   habría que buscar y reemplazar el color en todo el archivo, y seguro
+   se escapa alguno.
+
+   Se usan escribiendo var(--nombre-de-la-variable)
+   --------------------------------------------------------------------- */
+:root {
+  --color-marca: #000305; /* Gris muy oscuro, casi negro */
+  --color-fondo: #f8f9fa; /* Gris muy claro para el fondo */
+  --radio-borde: 10px; /* Redondez de las esquinas */
+}
+
+/* ---------------------------------------------------------------------
+   CUERPO DE LA PÁGINA
+   ---------------------------------------------------------------------
+   Aquí se aplica el patrón "sticky footer": hace que el pie de página
+   se quede abajo del todo aunque la página tenga poco contenido.
+
+   Sin esto, en una página con dos líneas de texto, el pie quedaría
+   flotando en la mitad de la pantalla y se vería mal.
+
+   ¿CÓMO FUNCIONA?
+     min-height: 100vh    → el cuerpo mide como mínimo el alto de la
+                            pantalla (vh = viewport height)
+     display: flex        → sus hijos se acomodan en una dirección
+     flex-direction: column → esa dirección es de arriba hacia abajo
+   Y en el <main> se pone flex: 1, que significa "estírate para ocupar
+   todo el espacio sobrante", empujando el pie hacia abajo.
+   --------------------------------------------------------------------- */
+body {
+  background-color: var(--color-fondo);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* Ocupa todo el espacio libre y empuja el pie abajo */
+}
+
+/* ---------------------------------------------------------------------
+   TARJETAS
+   ---------------------------------------------------------------------
+   Redondeamos un poco más las esquinas que Bootstrap por defecto.
+   --------------------------------------------------------------------- */
+.card {
+  border-radius: var(--radio-borde);
+}
+
+/* ---------------------------------------------------------------------
+   TABLAS
+   ---------------------------------------------------------------------
+   Los encabezados de tabla en mayúsculas pequeñas: se leen más rápido
+   y se distinguen del contenido de un vistazo.
+   --------------------------------------------------------------------- */
+.table thead th {
+  font-size: 0.78rem;
+  text-transform: uppercase; /* Convierte el texto a MAYÚSCULAS */
+  letter-spacing: 0.04em; /* Separa un poquito las letras */
+  color: #6c757d; /* Gris medio */
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------
+   BARRA DE NAVEGACIÓN
+   ---------------------------------------------------------------------
+   Resalta la opción del menú correspondiente a la página actual.
+   La clase "active" se la pone el PHP en cabecera.php.
+   --------------------------------------------------------------------- */
+.navbar .nav-link.active {
+  color: #fff !important;
+  /* !important obliga a que esta regla gane sobre la de Bootstrap.
+
+       ADVERTENCIA PARA LA SUSTENTACIÓN: !important se debe usar lo
+       MENOS posible. Es como gritar en una conversación: si todos
+       gritan, nadie se entiende. Aquí está justificado porque estamos
+       sobrescribiendo una regla de una librería externa a la que no
+       podemos modificar. */
+}
+
+/* ---------------------------------------------------------------------
+   IMÁGENES DE PRENDAS
+   ---------------------------------------------------------------------
+   object-fit: contain hace que la foto se vea COMPLETA dentro del
+   espacio disponible, sin recortarse ni deformarse.
+
+   Las tres opciones comunes:
+     fill    → estira la imagen hasta llenar (la DEFORMA, se ve mal)
+     cover   → recorta los bordes para llenar (no deforma, pero corta)
+     contain → la imagen completa, con espacio sobrante si hace falta
+   Para ropa usamos contain: es preferible ver espacio blanco que ver
+   una camiseta estirada o con las mangas cortadas.
+   --------------------------------------------------------------------- */
+.card img {
+  object-fit: contain;
+}
+
+/* ---------------------------------------------------------------------
+   CAMPOS CON ERROR
+   ---------------------------------------------------------------------
+   La clase "campo-error" se la agrega el JavaScript (validaciones.js)
+   a los campos que están mal diligenciados.
+
+   El borde rojo le dice al usuario exactamente CUÁL campo corregir.
+   Mostrar solo un mensaje arriba sin marcar el campo obliga al usuario
+   a adivinar dónde está el problema.
+   --------------------------------------------------------------------- */
+.campo-error {
+  border-color: #dc3545 !important; /* Rojo de Bootstrap */
+  /* box-shadow crea el "resplandor" alrededor del campo.
+       El último valor con rgba incluye transparencia:
+       rgba(rojo, verde, azul, opacidad) */
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
+}
+
+/* ---------------------------------------------------------------------
+   AJUSTES PARA CELULAR
+   ---------------------------------------------------------------------
+   @media es una "consulta de medios": aplica estas reglas SOLO cuando
+   se cumple la condición.
+
+   max-width: 576px significa "en pantallas de 576 píxeles o menos",
+   o sea, en celulares.
+
+   Este enfoque se llama diseño adaptativo (responsive): la misma
+   página se ve bien en computador y en celular.
+   --------------------------------------------------------------------- */
+@media (max-width: 576px) {
+  /* En celular, los botones de acción de la tabla quedan muy juntos
+       y es fácil apretar el equivocado (sobre todo el de eliminar).
+       Les damos un poco más de aire. */
+  .table .btn-sm {
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.15rem;
+  }
+
+  /* Títulos un poco más pequeños para que no ocupen media pantalla */
+  h1.h3 {
+    font-size: 1.35rem;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   AL IMPRIMIR
+   ---------------------------------------------------------------------
+   @media print aplica solo cuando el usuario imprime la página o la
+   guarda como PDF.
+
+   Escondemos los elementos que no sirven en papel: el menú, el pie y
+   los botones. Nadie puede hacer clic en un botón impreso.
+
+   Es un detalle que casi nadie incluye y que se nota mucho: si la
+   dueña de la tienda quiere imprimir el reporte de estadísticas, sale
+   limpio en vez de salir con el menú y los botones atravesados.
+   --------------------------------------------------------------------- */
+@media print {
+  .navbar,
+  footer,
+  .btn,
+  form {
+    display: none !important; /* No se imprime */
+  }
+
+  .card {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important; /* Las sombras gastan tinta */
+  }
+
+  body {
+    background: #fff; /* Fondo blanco: no desperdicia tinta */
+  }
+}
